@@ -1,5 +1,10 @@
 # URL shortener API demo
 
+### Heroku Demo
+front-end: https://shourtenedurldemo.netlify.com
+API: https://bc-url-shrt.herokuapp.com/top
+
+
 ### Overview
 The solution consists of:
 
@@ -40,15 +45,15 @@ yarn dev
 
 ### Sample Requests
 ```
-curl -X POST -d "original_url=google.com" http://localhost:3000/short_it
-  -> {"success":true,"short_url":"localhost:3000/on2miq"}
+curl -X POST -d "original_url=facebook.com" https://bc-url-shrt.herokuapp.com/short_it
+  -> {"success":true,"short_url":"bc-url-shrt.herokuapp.com/isxoc0"}
 
-curl -l localhost:3000/on2miq
-  -> <html><body>You are being <a href="http://google.com">redirected</a>.</body></html>
+curl -l https://bc-url-shrt.herokuapp.com/isxoc0
+  -> <html><body>You are being <a href="http://facebook.com">redirected</a>.</body></html>
 
-curl localhost:3000/sanitize/on2miq
-  -> {"url":"http://google.com"}
+curl https://bc-url-shrt.herokuapp.com/sanitize/isxoc0
+  -> {"url":"http://facebook.com"}
 
-curl localhost:3000/top.json
-  -> [{"id": 1, "title":"Google","url":"http://google.com"}, {}...]
+curl https://bc-url-shrt.herokuapp.com/top.json
+  -> [{"id":2,"title":"Facebook - Log In or Sign Up","url":"http://facebook.com"},{"id":1,"title":"Google","url":"http://google.com"}]
 ```
