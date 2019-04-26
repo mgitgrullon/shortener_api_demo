@@ -5,7 +5,7 @@ class ShortenedUrlsController < ApplicationController
   # GET /top
   def top
     @urls = ShortenedUrl.limit(100).order(counter: :desc)
-    render json: @urls
+    render json: @urls.map { |url| { title: url.title, url: url.sanitize_url } }
   end
 
   # GET sanitize/:short_url
@@ -23,24 +23,31 @@ class ShortenedUrlsController < ApplicationController
     @duplicate_entry = @url.find_duplicate
     if @duplicate_entry.nil?
       if @url.save
-        render json: { success: true, short_url: @url.short_url }
+        render json: { success: true, short_url: host_url(@url) }
       else
         render json: { success: false, message: 'Invalid url' }
       end
     else
-      @url = @duplicate_entry
-      @url.increment_counter
-      render json: { success: true, short_url: @url.short_url }
+      render json: { success: true, short_url: host_url(@duplicate_entry) }
     end
   end
 
   # GET /:short_url
   def fetch_original_url
     fetch_url = ShortenedUrl.find_by_short_url(params[:short_url])
-    fetch_url.present? redirect_to fetch_url.sanitize_url
+    if fetch_url.present?
+      fetch_url.increment_counter
+      redirect_to fetch_url.sanitize_url
+    else
+      render json: { success: false, message: 'Invalid url' }
+    end
   end
 
   protected
+
+  def host_url(url)
+    request.host_with_port + '/' + url.short_url
+  end
 
   def find_url
     @url = ShortenedUrl.find_by_short_url(params[:short_url])

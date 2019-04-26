@@ -9,10 +9,10 @@ class ShortenedUrl < ApplicationRecord
 
   # simple approach: generates a base36 unique hash without encoding the URL
   def generate_short_url
-    url = ([*('a'..'z'),*('0'..'9')]).sample(UNIQUE_ID_LENGTH).join
+    url = [*('a'..'z'),*('0'..'9')].sample(UNIQUE_ID_LENGTH).join
     old_url = ShortenedUrl.where(short_url: url).last
     if old_url.present?
-      self.generate_short_url
+      generate_short_url
     else
       self.short_url = url
     end
@@ -35,9 +35,10 @@ class ShortenedUrl < ApplicationRecord
 
   def fetch_title
     begin
-      self.title = Nokogiri::HTML::Document.parse(HTTParty.get(self.sanitize_url).body).title
+      self.title = Nokogiri::HTML::Document
+        .parse(HTTParty.get(self.sanitize_url).body).title
       self.save
-    rescue HTTParty::Error, SocketError  => e
+    rescue HTTParty::Error, SocketError => e
       puts 'HttParty::Error, ' + e.message
     end
   end
