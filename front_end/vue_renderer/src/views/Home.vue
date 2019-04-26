@@ -39,7 +39,7 @@ export default {
     addUrl (newUrl) {
       const { original_url } = newUrl
 
-      axios.post('http://localhost:3000/short_it', {
+      axios.post(`${process.env.ROOT_API}/short_it`, {
         original_url
       })
         .then(res => (this.shortUrl = res.data.short_url))
@@ -47,7 +47,7 @@ export default {
     }
   },
   created () {
-    axios.get('http://localhost:3000/top')
+    axios.get(`${process.env.ROOT_API}/top`)
       .then(res => (this.top = res.data))
       .catch(err => console.log(err))
   }
