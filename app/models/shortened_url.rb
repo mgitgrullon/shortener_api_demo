@@ -4,8 +4,8 @@ class ShortenedUrl < ApplicationRecord
   validates_format_of :original_url,
     with: /\A(?:(?:http|https):\/\/)?([-a-zA-Z0-9.]{2,256}\.[a-z]{2,4})\b(?:\/[-a-zA-Z0-9@,!:%_\+.~#?&\/\/=]*)?\z/
   before_create :generate_short_url
-  before_create :sanitize
 
+  # simple approach: generates a base36 unique hash without encoding the URL
   def generate_short_url
     url = ([*('a'..'z'),*('0'..'9')]).sample(UNIQUE_ID_LENGTH).join
     old_url = ShortenedUrl.where(short_url: url).last
@@ -20,13 +20,14 @@ class ShortenedUrl < ApplicationRecord
     ShortenedUrl.find_by_sanitize_url(self.sanitize_url)
   end
 
-  def new_url?
-    find_duplicate.nil?
+  def increment_counter
+    self.counter += 1
+    self.save
   end
   
   def sanitize
     self.original_url.strip!
-    self.sanitize_url = self.original_url.downcase.gsub(/(https?:\/\/)|(www\.)/, "")
-    self.sanitize_url = "http://#{self.sanitize_url}"
+    sanitize_url = self.original_url.downcase.gsub(/(https?:\/\/)|(www\.)/, '')
+    self.sanitize_url = "http://#{sanitize_url}"
   end
 end
