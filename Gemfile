@@ -29,6 +29,7 @@ gem 'active_model_serializers'
 
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 gem 'rack-cors'
+gem 'rack-attack'
 
 gem 'delayed_job_active_record'
 gem 'daemons'
