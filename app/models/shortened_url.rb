@@ -44,6 +44,8 @@ class ShortenedUrl < ApplicationRecord
   end
 
   def fetch_title_job
-    UrlTitleJob.perform_later(self)
+    if self.title.nil?
+      UrlTitleJob.perform_later(self)
+    end
   end
 end
