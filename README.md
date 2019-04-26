@@ -20,3 +20,31 @@ Bring up the rails api
 bundle install
 rails db:migrate
 ```
+
+### Run tests
+```
+bundle exec rspec
+```
+
+### Start the server
+```
+bin/delayed_job start
+rails s
+```
+
+
+### Sample Requests
+```
+curl -X POST -d "original_url=google.com" http://localhost:3000/short_it
+  -> {"success":true,"short_url":"localhost:3000/on2miq"}
+
+curl -l localhost:3000/on2miq
+  -> <html><body>You are being <a href="http://google.com">redirected</a>.</body></html>
+
+curl localhost:3000/sanitize/on2miq
+  -> {"url":"http://google.com"}
+
+
+curl localhost:3000/top.json
+  -> [{"title":"Google","url":"http://google.com"}, {}...]
+```
