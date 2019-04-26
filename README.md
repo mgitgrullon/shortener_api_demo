@@ -11,6 +11,7 @@ The solution consists of:
 ```
 ruby 2.4.2
 Rails 5.2.3
+yarn 1.3.2
 ```
 
 ### Setup the local env
@@ -30,6 +31,10 @@ bundle exec rspec
 ```
 bin/delayed_job start
 rails s
+
+cd front_end/vue_renderer/
+yarn install
+yarn dev
 ```
 
 
@@ -44,7 +49,6 @@ curl -l localhost:3000/on2miq
 curl localhost:3000/sanitize/on2miq
   -> {"url":"http://google.com"}
 
-
 curl localhost:3000/top.json
-  -> [{"title":"Google","url":"http://google.com"}, {}...]
+  -> [{"id": 1, "title":"Google","url":"http://google.com"}, {}...]
 ```

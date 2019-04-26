@@ -5,7 +5,7 @@ class ShortenedUrlsController < ApplicationController
   # GET /top
   def top
     @urls = ShortenedUrl.limit(100).order(counter: :desc)
-    render json: @urls.map { |url| { title: url.title, url: url.sanitize_url } }
+    render json: @urls.map { |url| { id: url.id, title: url.title, url: url.sanitize_url } }
   end
 
   # GET sanitize/:short_url
