@@ -2,15 +2,18 @@ class ShortenedUrlsController < ApplicationController
   before_action :find_url, only: [:show]
   before_action :ensure_params_exist, only: [:create]
 
+  # GET /top
   def top
-    @urls = ShortenedUrl.limit(10).order(counter: :desc)
+    @urls = ShortenedUrl.limit(100).order(counter: :desc)
     render json: @urls
   end
 
+  # GET sanitize/:short_url
   def show
     render json: { url: @url.sanitize_url }
   end
 
+  # POST /short_it
   def create
     @url = ShortenedUrl.new
     @url.original_url = params[:original_url]
@@ -31,6 +34,7 @@ class ShortenedUrlsController < ApplicationController
     end
   end
 
+  # GET /:short_url
   def fetch_original_url
     fetch_url = ShortenedUrl.find_by_short_url(params[:short_url])
     fetch_url.present? redirect_to fetch_url.sanitize_url
