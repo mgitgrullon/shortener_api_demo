@@ -3,8 +3,8 @@
     <div class="max-w-sm m-auto my-8">
       <div class="border p-10 border-grey-light shadow rounded">
         <AddUrl v-on:add-url="addUrl"/>
-        <div class="opacity-25">
-          <span class="text-2xl font-sans px-4 rounded cursor-pointer no-underline block w-full py-4 items-center justify-center">{{ shortUrl }}</span>
+        <div class="flex justify-center">
+          <span class="text-2xl font-sans opacity-25 py-4">{{ shortUrl }}</span>
         </div>
       </div>
     </div>
