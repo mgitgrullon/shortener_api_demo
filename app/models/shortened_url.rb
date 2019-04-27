@@ -21,12 +21,7 @@ class ShortenedUrl < ApplicationRecord
   def find_duplicate
     ShortenedUrl.find_by_sanitize_url(self.sanitize_url)
   end
-
-  def increment_counter
-    self.counter += 1
-    self.save
-  end
-  
+ 
   def sanitize
     self.original_url.strip!
     sanitize_url = self.original_url.downcase.gsub(/(https?:\/\/)|(www\.)/, '')

@@ -5,7 +5,7 @@ class ShortenedUrlsController < ApplicationController
   # GET /top
   def top
     @urls = ShortenedUrl.limit(100).order(counter: :desc)
-    render json: @urls.map { |url| { id: url.id, title: url.title, url: url.sanitize_url } }
+    render json: @urls.map { |url| { id: url.id, title: url.title, url: url.sanitize_url, visit_count: url.counter } }
   end
 
   # GET sanitize/:short_url
@@ -36,7 +36,7 @@ class ShortenedUrlsController < ApplicationController
   def fetch_original_url
     fetch_url = ShortenedUrl.find_by_short_url(params[:short_url])
     if fetch_url.present?
-      fetch_url.increment_counter
+      fetch_url.increment!(:counter)
       redirect_to fetch_url.sanitize_url
     else
       render json: { success: false, message: 'Invalid url' }
